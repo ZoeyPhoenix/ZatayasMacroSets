@@ -1,0 +1,8 @@
+## Interface: 30300
+## Title: Zataya's Macro Sets
+## Notes: Lets you save and restore sets of character macros
+## Version: 1.0.4
+## SavedVariables: Zms_Config
+
+
+ZatayasMacroSets.lua
