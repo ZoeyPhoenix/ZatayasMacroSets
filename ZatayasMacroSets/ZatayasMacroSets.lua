@@ -120,8 +120,8 @@ function ZatayasMacroSets:Trim(s)
   return s:match("^%s*(.-)%s*$")
 end
 
-function ZatayasMacroSets:ShortenString(s)
-  local max = 16
+function ZatayasMacroSets:ShortenString(s, max)
+  --local max = 16
   if s then
     local len = #s
     if len > max then
@@ -363,6 +363,31 @@ function ZatayasMacroSets:CreateSetsButtons()
   newbtn:SetScript("OnLeave", function(self)
     GameTooltip:Hide();
   end)
+
+  local brwrbtn = CreateFrame("Button", nil, ZatayasMacroSets)
+  brwrbtn:SetPoint("TOP", ZatayasMacroSets, "BOTTOM", 0, 0)
+  brwrbtn:SetHeight(15)
+  brwrbtn:SetWidth(40)
+  brwrbtn:SetText("browser")
+  brwrbtn:GetFontString():SetTextColor(1, 1, 1, 1)
+  brwrbtn:GetFontString():SetFont("Fonts\\FRIZQT__.TTF", 8, nil)
+
+  newbtn:SetNormalFontObject("GameFontNormal")
+  ZatayasMacroSets:SetTextures(brwrbtn)
+
+  brwrbtn:SetScript("OnClick", function(self, button, down)
+    ZatayasMacroSetBrowser:Show()
+  end)
+
+  brwrbtn:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(brwrbtn, "ANCHOR_CURSOR");
+    GameTooltip:AddLine("Open the macro set browser");
+    GameTooltip:Show()
+  end)
+
+  newbtn:SetScript("OnLeave", function(self)
+    GameTooltip:Hide();
+  end)
 end
 
 local framewidthsbycolumn = {
@@ -439,7 +464,7 @@ function ZatayasMacroSets:UpdateSetButtons()
         row = row + 1
       end
 
-      ZatayasMacroSets.MacroSetButtons[k]:SetText(ZatayasMacroSets:ShortenString(ZatayasMacroSets.sortedlist[k].Name))
+      ZatayasMacroSets.MacroSetButtons[k]:SetText(ZatayasMacroSets:ShortenString(ZatayasMacroSets.sortedlist[k].Name, 16))
       ZatayasMacroSets.MacroSetButtons[k]:SetScript("OnClick", nil)
       ZatayasMacroSets.MacroSetButtons[k]:SetScript("OnClick", function(self, button, down)
         if button and button == "LeftButton" then
@@ -528,6 +553,8 @@ SlashCmdList["ZMS"] = function(msg)
       else
         ZatayasMacroSets:PrintToChat("Please provide a name.")
       end
+    elseif string.lower(cmd) == "browser" then
+      ZatayasMacroSetBrowser:Show()
     else
       ZatayasMacroSets:PrintHelp()
     end
